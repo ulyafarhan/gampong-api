@@ -29,7 +29,7 @@
 
             <div class="mb-3">
                 <label for="content" class="form-label">Isi Berita*</label>
-                <textarea class="form-control @error('content') is-invalid @enderror" id="content-editor" name="content" rows="10">{{ old('content', $article->content ?? '') }}</textarea>
+                <textarea class="form-control @error('content') is-invalid @enderror" id="summernote-editor" name="content" rows="10">{{ old('content', $article->content ?? '') }}</textarea>
                 @error('content')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -64,22 +64,21 @@
 </form>
 
 @push('scripts')
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        tinymce.init({
-            selector: '#content-editor',
-            plugins: 'code table lists image link',
-            toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | image link',
-            // Simple image upload setup
-            images_upload_url: '{{ route('admin.articles.store') }}', // This needs a dedicated image upload handler
-            images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
-                // This is a placeholder. A real implementation needs a dedicated route
-                // that accepts an image, stores it, and returns a JSON with the location.
-                // For now, we will prevent the default upload and show an alert.
-                reject('Fungsi unggah gambar dari editor belum diimplementasikan. Silakan gunakan field "Gambar Utama".');
-            }),
-            height: 400,
+    $(document).ready(function() {
+        $('#summernote-editor').summernote({
+            placeholder: 'Tulis isi berita di sini...',
+            tabsize: 2,
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
         });
     });
 </script>

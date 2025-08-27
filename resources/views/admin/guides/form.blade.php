@@ -28,7 +28,7 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Deskripsi Singkat*</label>
-                <textarea class="form-control @error('description') is-invalid @enderror" id="description-editor" name="description" rows="5">{{ old('description', $guide->description ?? '') }}</textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" id="summernote-description" name="description" rows="5">{{ old('description', $guide->description ?? '') }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -36,7 +36,7 @@
 
             <div class="mb-3">
                 <label for="steps" class="form-label">Langkah-langkah*</label>
-                <textarea class="form-control @error('steps') is-invalid @enderror" id="steps-editor" name="steps" rows="10">{{ old('steps', $guide->steps ?? '') }}</textarea>
+                <textarea class="form-control @error('steps') is-invalid @enderror" id="summernote-steps" name="steps" rows="10">{{ old('steps', $guide->steps ?? '') }}</textarea>
                 @error('steps')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -96,24 +96,25 @@
 </form>
 
 @push('scripts')
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // WYSIWYG Editors
-        const commonConfig = {
-            plugins: 'code table lists link',
-            toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | link',
+    $(document).ready(function() {
+        const summernoteConfig = {
+            placeholder: 'Tulis di sini...',
+            tabsize: 2,
             height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview']]
+            ]
         };
-        tinymce.init({
-            selector: '#description-editor',
-            ...commonConfig
-        });
-        tinymce.init({
-            selector: '#steps-editor',
-            ...commonConfig,
-            height: 450
-        });
+
+        $('#summernote-description').summernote(summernoteConfig);
+        $('#summernote-steps').summernote(summernoteConfig);
 
         // Requirements management
         const container = document.getElementById('requirements-container');
@@ -130,11 +131,9 @@
 
         container.addEventListener('click', function(e) {
             if (e.target && e.target.classList.contains('remove-requirement-btn')) {
-                // Do not remove the last input field
                 if (container.querySelectorAll('.requirement-input-group').length > 1) {
                     e.target.closest('.requirement-input-group').remove();
                 } else {
-                    // Clear the value of the last input field instead of removing it
                     e.target.closest('.requirement-input-group').querySelector('input').value = '';
                 }
             }

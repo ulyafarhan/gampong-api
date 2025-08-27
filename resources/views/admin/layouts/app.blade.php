@@ -6,6 +6,7 @@
     <title>Panel Admin Gampong Udeung</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs5.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -17,6 +18,9 @@
             </button>
             <div class="collapse navbar-collapse" id="adminNavbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Dasbor</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.articles.index') }}">Berita & Pengumuman</a>
                     </li>
@@ -45,7 +49,9 @@
         @yield('content')
     </main>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs5.min.js"></script>
     @stack('scripts')
 </body>
 </html>

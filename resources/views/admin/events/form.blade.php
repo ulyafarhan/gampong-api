@@ -29,7 +29,7 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Deskripsi*</label>
-                <textarea class="form-control @error('description') is-invalid @enderror" id="description-editor" name="description" rows="8">{{ old('description', $event->description ?? '') }}</textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" id="summernote-editor" name="description" rows="8">{{ old('description', $event->description ?? '') }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -89,14 +89,21 @@
 </form>
 
 @push('scripts')
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        tinymce.init({
-            selector: '#description-editor',
-            plugins: 'code table lists link',
-            toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | link',
+    $(document).ready(function() {
+        $('#summernote-editor').summernote({
+            placeholder: 'Tulis deskripsi kegiatan di sini...',
+            tabsize: 2,
             height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview']]
+            ]
         });
     });
 </script>

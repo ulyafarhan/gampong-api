@@ -6,7 +6,12 @@
 </div>
 
 <div class="alert alert-info">
-    Selamat datang kembali, <strong>{{ Auth::user()->name }}</strong>! Anda telah login sebagai admin.
+    @if (Auth::check())
+        Selamat datang kembali, <strong>{{ Auth::user()->name }}</strong>!
+    @else
+        Selamat datang!
+    @endif
+    Anda telah login sebagai admin.
 </div>
 
 <div class="row">
