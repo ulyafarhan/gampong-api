@@ -28,7 +28,7 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Deskripsi Singkat*</label>
-                <textarea class="form-control @error('description') is-invalid @enderror" id="summernote-description" name="description" rows="5">{{ old('description', $guide->description ?? '') }}</textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" id="editor-description" name="description" rows="5">{{ old('description', $guide->description ?? '') }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -36,7 +36,7 @@
 
             <div class="mb-3">
                 <label for="steps" class="form-label">Langkah-langkah*</label>
-                <textarea class="form-control @error('steps') is-invalid @enderror" id="summernote-steps" name="steps" rows="10">{{ old('steps', $guide->steps ?? '') }}</textarea>
+                <textarea class="form-control @error('steps') is-invalid @enderror" id="editor-steps" name="steps" rows="10">{{ old('steps', $guide->steps ?? '') }}</textarea>
                 @error('steps')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -97,26 +97,20 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        const summernoteConfig = {
-            placeholder: 'Tulis di sini...',
-            tabsize: 2,
-            height: 300,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link']],
-                ['view', ['fullscreen', 'codeview']]
-            ]
-        };
+    ClassicEditor
+        .create( document.querySelector( '#editor-description' ) )
+        .catch( error => {
+            console.error( error );
+        } );
 
-        $('#summernote-description').summernote(summernoteConfig);
-        $('#summernote-steps').summernote(summernoteConfig);
+    ClassicEditor
+        .create( document.querySelector( '#editor-steps' ) )
+        .catch( error => {
+            console.error( error );
+        } );
 
-        // Requirements management
+    // Requirements management
+    document.addEventListener('DOMContentLoaded', function () {
         const container = document.getElementById('requirements-container');
 
         document.getElementById('add-requirement-btn').addEventListener('click', function() {

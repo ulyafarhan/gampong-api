@@ -29,7 +29,7 @@
 
             <div class="mb-3">
                 <label for="content" class="form-label">Isi Berita*</label>
-                <textarea class="form-control @error('content') is-invalid @enderror" id="summernote-editor" name="content" rows="10">{{ old('content', $article->content ?? '') }}</textarea>
+                <textarea class="form-control @error('content') is-invalid @enderror" id="editor" name="content" rows="10">{{ old('content', $article->content ?? '') }}</textarea>
                 @error('content')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -65,21 +65,10 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        $('#summernote-editor').summernote({
-            placeholder: 'Tulis isi berita di sini...',
-            tabsize: 2,
-            height: 300,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']]
-            ]
-        });
-    });
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
 </script>
 @endpush

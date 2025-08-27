@@ -29,7 +29,7 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Deskripsi*</label>
-                <textarea class="form-control @error('description') is-invalid @enderror" id="summernote-editor" name="description" rows="8">{{ old('description', $event->description ?? '') }}</textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" id="editor" name="description" rows="8">{{ old('description', $event->description ?? '') }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -90,21 +90,10 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        $('#summernote-editor').summernote({
-            placeholder: 'Tulis deskripsi kegiatan di sini...',
-            tabsize: 2,
-            height: 300,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link']],
-                ['view', ['fullscreen', 'codeview']]
-            ]
-        });
-    });
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
 </script>
 @endpush
