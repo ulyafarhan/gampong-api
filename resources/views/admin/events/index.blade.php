@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3">Manajemen Berita & Pengumuman</h1>
-    <a href="{{ route('admin.articles.create') }}" class="btn btn-primary">Tambah Berita Baru</a>
+    <h1 class="h3">Manajemen Kalender Kegiatan</h1>
+    <a href="{{ route('admin.events.create') }}" class="btn btn-primary">Tambah Kegiatan Baru</a>
 </div>
 
 @if (session('success'))
@@ -20,44 +20,40 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Judul</th>
-                        <th>Tanggal Dibuat</th>
-                        <th>Status</th>
+                        <th>Judul Kegiatan</th>
+                        <th>Lokasi</th>
+                        <th>Waktu Mulai</th>
+                        <th>Waktu Selesai</th>
                         <th style="width: 15%;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($articles as $article)
+                    @forelse ($events as $event)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $article->title }}</td>
-                            <td>{{ $article->created_at->format('d M Y') }}</td>
+                            <td>{{ $event->title }}</td>
+                            <td>{{ $event->location ?? '-' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($event->start_time)->format('d M Y, H:i') }}</td>
+                            <td>{{ $event->end_time ? \Carbon\Carbon::parse($event->end_time)->format('d M Y, H:i') : '-' }}</td>
                             <td>
-                                @if ($article->is_published)
-                                    <span class="badge bg-success">Published</span>
-                                @else
-                                    <span class="badge bg-secondary">Draft</span>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-sm btn-info text-white">Edit</a>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $article->id }}">
+                                <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-sm btn-info text-white">Edit</a>
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $event->id }}">
                                     Hapus
                                 </button>
 
                                 <!-- Delete Confirmation Modal -->
-                                <div class="modal fade" id="deleteModal-{{ $article->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $article->id }}" aria-hidden="true">
+                                <div class="modal fade" id="deleteModal-{{ $event->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $event->id }}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteModalLabel-{{ $article->id }}">Konfirmasi Hapus</h5>
+                                                <h5 class="modal-title" id="deleteModalLabel-{{ $event->id }}">Konfirmasi Hapus</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Apakah Anda yakin ingin menghapus artikel: <strong>{{ $article->title }}</strong>?
+                                                Apakah Anda yakin ingin menghapus kegiatan: <strong>{{ $event->title }}</strong>?
                                             </div>
                                             <div class="modal-footer">
-                                                <form action="{{ route('admin.articles.destroy', $article) }}" method="POST">
+                                                <form action="{{ route('admin.events.destroy', $event) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -71,7 +67,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">Tidak ada artikel ditemukan.</td>
+                            <td colspan="6" class="text-center">Tidak ada kegiatan ditemukan.</td>
                         </tr>
                     @endforelse
                 </tbody>

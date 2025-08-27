@@ -23,31 +23,4 @@ Route::get('/government-structures/{id}', [GovernmentStructureController::class,
 
 // Tambahkan route publik lainnya di sini
 
-// Protected Routes (untuk Panel Admin)
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/admin/articles', [ArticleController::class, 'adminIndex']);
-    Route::post('/articles', [ArticleController::class, 'store']);
-    Route::put('/articles/{id}', [ArticleController::class, 'update']);
-    Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
-    Route::get('/admin/articles/{slug}', [ArticleController::class, 'showForAdmin']);
-    
-    // Guide Routes
-    Route::apiResource('guides', GuideController::class)->except(['index', 'show']); // Cara praktis
-    Route::get('/admin/guides', [GuideController::class, 'index']); // Endpoint admin
-    Route::get('/admin/guides/{slug}', [GuideController::class, 'show']);
-
-    // Event Routes
-    Route::get('/admin/events', [EventController::class, 'adminIndex']);
-    Route::apiResource('events', EventController::class)->except(['index', 'show']);
-    Route::get('/admin/events/{slug}', [EventController::class, 'show']);
-
-    // Gallery Routes
-    Route::apiResource('galleries', GalleryController::class)->except(['index', 'show']);
-    Route::get('/admin/galleries', [GalleryController::class, 'index']);
-    Route::get('/admin/galleries/{id}', [GalleryController::class, 'show']);
-
-    // Government Structure Routes
-    Route::apiResource('government-structures', GovernmentStructureController::class)->except(['index', 'show']);
-    Route::get('/admin/government-structures', [GovernmentStructureController::class, 'index']);
-    Route::get('/admin/government-structures/{id}', [GovernmentStructureController::class, 'show']);
-});
+// The protected routes for admin panel are now managed in routes/web.php
