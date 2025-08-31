@@ -5,29 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin Gampong Udeung</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs5.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/admin/dashboard">Panel Admin</a>
-            <div class="collapse navbar-collapse">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Panel Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarCollapse" aria-controls="adminNavbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="adminNavbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/articles">Berita & Pengumuman</a>
+                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Dasbor</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/guides">Panduan Administrasi</a>
+                        <a class="nav-link" href="{{ route('admin.articles.index') }}">Berita & Pengumuman</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/events">Kalender Kegiatan</a>
+                        <a class="nav-link" href="{{ route('admin.guides.index') }}">Panduan Administrasi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/galleries">Galeri</a>
+                        <a class="nav-link" href="{{ route('admin.events.index') }}">Kalender Kegiatan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.galleries.index') }}">Galeri</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.government-structures.index') }}">Struktur Pemerintahan</a>
                     </li>
                 </ul>
-                <form action="/admin/logout" method="POST" class="d-flex">
-                    @csrf <button class="btn btn-outline-danger" type="submit">Logout</button>
+                <form action="{{ route('admin.logout') }}" method="POST" class="d-flex">
+                    @csrf
+                    <button class="btn btn-outline-danger" type="submit">Logout</button>
                 </form>
             </div>
         </div>
@@ -37,6 +49,9 @@
         @yield('content')
     </main>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs5.min.js"></script>
+    @stack('scripts')
 </body>
 </html>

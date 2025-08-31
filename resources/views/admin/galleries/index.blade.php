@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3">Manajemen Berita & Pengumuman</h1>
-    <a href="{{ route('admin.articles.create') }}" class="btn btn-primary">Tambah Berita Baru</a>
+    <h1 class="h3">Manajemen Galeri</h1>
+    <a href="{{ route('admin.galleries.create') }}" class="btn btn-primary">Tambah Item Baru</a>
 </div>
 
 @if (session('success'))
@@ -20,44 +20,52 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Preview</th>
                         <th>Judul</th>
-                        <th>Tanggal Dibuat</th>
-                        <th>Status</th>
+                        <th>Tipe</th>
+                        <th>Tanggal</th>
                         <th style="width: 15%;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($articles as $article)
+                    @forelse ($galleries as $gallery)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $article->title }}</td>
-                            <td>{{ $article->created_at->format('d M Y') }}</td>
                             <td>
-                                @if ($article->is_published)
-                                    <span class="badge bg-success">Published</span>
+                                @if ($gallery->type == 'image')
+                                    <img src="{{ Storage::url($gallery->url) }}" alt="{{ $gallery->title }}" style="max-height: 50px; max-width: 100px;">
                                 @else
-                                    <span class="badge bg-secondary">Draft</span>
+                                    <a href="{{ $gallery->url }}" target="_blank">Lihat Video</a>
                                 @endif
                             </td>
+                            <td>{{ $gallery->title }}</td>
                             <td>
-                                <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-sm btn-info text-white">Edit</a>
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $article->id }}">
+                                @if ($gallery->type == 'image')
+                                    <span class="badge bg-info">Gambar</span>
+                                @else
+                                    <span class="badge bg-danger">Video</span>
+                                @endif
+                            </td>
+                            <td>{{ $gallery->created_at->format('d M Y') }}</td>
+                            <td>
+                                <a href="{{ route('admin.galleries.edit', $gallery) }}" class="btn btn-sm btn-info text-white">Edit</a>
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $gallery->id }}">
                                     Hapus
                                 </button>
 
                                 <!-- Delete Confirmation Modal -->
-                                <div class="modal fade" id="deleteModal-{{ $article->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $article->id }}" aria-hidden="true">
+                                <div class="modal fade" id="deleteModal-{{ $gallery->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $gallery->id }}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteModalLabel-{{ $article->id }}">Konfirmasi Hapus</h5>
+                                                <h5 class="modal-title" id="deleteModalLabel-{{ $gallery->id }}">Konfirmasi Hapus</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Apakah Anda yakin ingin menghapus artikel: <strong>{{ $article->title }}</strong>?
+                                                Apakah Anda yakin ingin menghapus item: <strong>{{ $gallery->title }}</strong>?
                                             </div>
                                             <div class="modal-footer">
-                                                <form action="{{ route('admin.articles.destroy', $article) }}" method="POST">
+                                                <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -71,7 +79,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">Tidak ada artikel ditemukan.</td>
+                            <td colspan="6" class="text-center">Tidak ada item galeri ditemukan.</td>
                         </tr>
                     @endforelse
                 </tbody>
