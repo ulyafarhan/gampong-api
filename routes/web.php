@@ -7,11 +7,28 @@ use App\Http\Controllers\Admin\GuideController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\GovernmentStructureController;
+use App\Http\Controllers\PageController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Public Frontend Routes
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/profil', [PageController::class, 'profile'])->name('profile');
+Route::get('/berita', [PageController::class, 'articlesIndex'])->name('articles.index');
+Route::get('/berita/{article:slug}', [PageController::class, 'articleShow'])->name('articles.show');
+
+Route::get('/panduan', [PageController::class, 'guidesIndex'])->name('guides.index');
+Route::get('/panduan/{guide:slug}', [PageController::class, 'guideShow'])->name('guides.show');
+
+Route::get('/kegiatan', [PageController::class, 'eventsIndex'])->name('events.index');
+
+Route::get('/galeri', [PageController::class, 'galleriesIndex'])->name('galleries.index');
+
+Route::get('/kontak', [PageController::class, 'contactCreate'])->name('contact.create');
+Route::post('/kontak', [PageController::class, 'contactStore'])->name('contact.store');
+
+// Generic data table page template
+Route::get('/data-kegiatan', [PageController::class, 'dataTablePage'])->name('data.table');
+
 
 // Admin Authentication
 Route::middleware('guest')->group(function () {
